@@ -7,7 +7,7 @@ const tmp = require("tmp");
 
 const tmpDir = tmp.dirSync();
 const sourceSumatraPath = path.join(__dirname, "SumatraPDF.exe");
-const destSumatraPath = path.join(tmpDir, "SumatraPDF.exe");
+const destSumatraPath = path.join(tmpDir.name, "SumatraPDF.exe");
 
 // We ran into some bugs with @vercel/pkg, where
 // we need to copy this to a local file system to
