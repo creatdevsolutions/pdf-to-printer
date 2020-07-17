@@ -1,16 +1,19 @@
 {
-  "name": "pdf-to-printer",
+  "name": "@creatdevsolutions/pdf-to-printer",
   "version": "1.5.0",
   "description": "A utility to print PDF files from Node.js and Electron",
   "license": "MIT",
   "author": "Artur Khusaenov <artur.khusaenov@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/artiebits/pdf-to-printer.git"
+    "url": "https://github.com/creatdevsolutions/pdf-to-printer.git"
   },
   "main": "dist/bundle.js",
   "files": [
     "dist"
+  ],
+  "maintainers": [
+    "Johann Wagner <johann@wagnerdevelopment.de>"
   ],
   "scripts": {
     "test": "jest",
