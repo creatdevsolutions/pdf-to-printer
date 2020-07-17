@@ -3,15 +3,31 @@
 const path = require("path");
 const fs = require("fs");
 const execAsync = require("../execAsync");
-const { fixPathForAsarUnpack } = require("../electron-util");
+const tmp = require("tmp");
+
+const tmpDir = tmp.dirSync();
+const sourceSumatraPath = path.join(__dirname, "SumatraPDF.exe");
+const destSumatraPath = path.join(tmpDir, "SumatraPDF.exe");
+
+// We ran into some bugs with @vercel/pkg, where
+// we need to copy this to a local file system to
+// be allowed to execute this.
+const ensureSumatraInLocalFileSystem = () => {
+  if (fs.existsSync(destSumatraPath)) {
+    return;
+  }
+
+  const sourceFile = fs.readFileSync(sourceSumatraPath);
+  fs.writeFileSync(destSumatraPath, sourceFile);
+  fs.chmodSync(destSumatraPath, 0o765); // maybe need to grant execute permission
+};
 
 const print = (pdf, options = {}) => {
   if (!pdf) throw "No PDF specified";
   if (typeof pdf !== "string") throw "Invalid PDF name";
   if (!fs.existsSync(pdf)) throw "No such file";
 
-  let file = path.join(__dirname, "SumatraPDF.exe");
-  file = fixPathForAsarUnpack(file);
+  ensureSumatraInLocalFileSystem();
 
   const args = [];
 
@@ -30,7 +46,7 @@ const print = (pdf, options = {}) => {
 
   args.push("-silent", pdf);
 
-  return execAsync(file, args);
+  return execAsync(destSumatraPath, args);
 };
 
 module.exports = print;
